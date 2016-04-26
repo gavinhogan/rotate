@@ -12,58 +12,55 @@
       width: 100%;
     }
   </style>
+<!--
+function runTheShow(tv){
+  var pages = tv.screens
+  var approvedPages = []
+  for(page of pages){
+    var dropPage = false
+    for(pattern of SENSITIVE_SCREEN_REGEX){
+      if(page.url.match(pattern)){
+        dropPage = true
+      }
+    }
+    if(sensitivityEnabled && dropPage){
+      console.log("Skipping " + page.url)
+    }else{
+      approvedPages.push(page)
+      $('body').append( "<iframe src='"+page.url+"' frameborder='0' scrolling='no'/>" );
+    }
+  }
 
+  showNext(0, approvedPages);
+
+  function showNext(current, thePages){
+    var index = (current+1)%thePages.length
+    var currentIframe = $($('iframe')[current])
+    var nextIframe = $($('iframe')[index])
+    currentIframe.hide();
+    nextIframe.show();
+
+    if(thePages[current].reload){
+      reloadIframe(currentIframe, thePages[current].url);
+    }
+    setTimeout(function(){showNext(index, thePages); },thePages[index].timeMs||tv.defaultTimeMs );
+  }
+
+  function reloadIframe(iframe, url){
+    console.log("Reloading for " + url)
+    iframe.replaceWith(function(){
+        return "<iframe src='"+url+"' frameborder='0' scrolling='no'/>"
+    })
+  }
+}
+-->
   <script>
   var urls = [
     'https://gavinhogan.github.io/rotate/one.html',
     'https://gavinhogan.github.io/rotate/two.html'];
 
-  function runTheShow(tv){
-    var pages = tv.screens
-    var approvedPages = []
-    for(page of pages){
-      var dropPage = false
-      for(pattern of SENSITIVE_SCREEN_REGEX){
-        if(page.url.match(pattern)){
-          dropPage = true
-        }
-      }
-      if(sensitivityEnabled && dropPage){
-        console.log("Skipping " + page.url)
-      }else{
-        approvedPages.push(page)
-        $('body').append( "<iframe src='"+page.url+"' frameborder='0' scrolling='no'/>" );
-      }
-    }
-
-    showNext(0, approvedPages);
-
-    function showNext(current, thePages){
-      var index = (current+1)%thePages.length
-      var currentIframe = $($('iframe')[current])
-      var nextIframe = $($('iframe')[index])
-      currentIframe.hide();
-      nextIframe.show();
-
-      if(thePages[current].reload){
-        reloadIframe(currentIframe, thePages[current].url);
-      }
-      setTimeout(function(){showNext(index, thePages); },thePages[index].timeMs||tv.defaultTimeMs );
-    }
-
-    function reloadIframe(iframe, url){
-      console.log("Reloading for " + url)
-      iframe.replaceWith(function(){
-          return "<iframe src='"+url+"' frameborder='0' scrolling='no'/>"
-      })
-    }
-  }
-
-
   function frameRotator(){
-
     var pos = 0;
-
     function nextDashboard(){
       if(pos == urls.length) pos = 0; // reset the counter
         document.getElementById('rotate').src = urls[pos];
