@@ -62,6 +62,7 @@ function runTheShow(tv){
   function frameRotator(){
     console.log("Show Time")
     var pos = 0;
+    nextDashboard();
     function nextDashboard(){
       if(pos == urls.length) pos = 0; // reset the counter
         document.getElementById('rotate').src = urls[pos];
