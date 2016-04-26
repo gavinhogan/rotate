@@ -3,35 +3,38 @@
 <head>
   <title>Happy Rotating Now</title>
   <style type="text/css">
-    html, body {
-      /*this css ensures the iframe is maximised in the window */
-      background:#000
-      overflow: hidden;
-      margin: auto;
-      height: 100%;
-      width: 100%;
-    }
-  </style>
-<!--
-function runTheShow(tv){
-  var pages = tv.screens
-  var approvedPages = []
+* {
+	margin:0;
+	padding:0;
+	border:0;
+}
+html, body, iframe {
+	height:100%;
+	width:100%;
+	overflow:hidden;
+}
+/* We do NOT want the iframes to show by default */
+iframe{
+	display:none;
+}
+
+body iframe:first-child{
+	display:inline;
+}
+</style>
+  <script>
+function runTheShow(){
+  var timeoutMs = 10000;
+  var pages = [
+    'https://gavinhogan.github.io/rotate/one.html',
+    'https://gavinhogan.github.io/rotate/two.html'];
+
   for(page of pages){
-    var dropPage = false
-    for(pattern of SENSITIVE_SCREEN_REGEX){
-      if(page.url.match(pattern)){
-        dropPage = true
-      }
-    }
-    if(sensitivityEnabled && dropPage){
-      console.log("Skipping " + page.url)
-    }else{
-      approvedPages.push(page)
-      $('body').append( "<iframe src='"+page.url+"' frameborder='0' scrolling='no'/>" );
-    }
+    //Add a hidden iframe for EVER page you wish to display
+    $('body').append( "<iframe src='"+page.url+"' frameborder='0' scrolling='no'/>" );
   }
 
-  showNext(0, approvedPages);
+  showNext(0, pages);
 
   function showNext(current, thePages){
     var index = (current+1)%thePages.length
@@ -40,40 +43,13 @@ function runTheShow(tv){
     currentIframe.hide();
     nextIframe.show();
 
-    if(thePages[current].reload){
-      reloadIframe(currentIframe, thePages[current].url);
-    }
-    setTimeout(function(){showNext(index, thePages); },thePages[index].timeMs||tv.defaultTimeMs );
-  }
-
-  function reloadIframe(iframe, url){
-    console.log("Reloading for " + url)
-    iframe.replaceWith(function(){
-        return "<iframe src='"+url+"' frameborder='0' scrolling='no'/>"
-    })
+    setTimeout(function(){showNext(index, thePages); },timeoutMs );
   }
 }
--->
-  <script>
-  var urls = [
-    'https://gavinhogan.github.io/rotate/one.html',
-    'https://gavinhogan.github.io/rotate/two.html'];
 
-  function frameRotator(){
-    console.log("Show Time")
-    var pos = 0;
-    nextDashboard();
-    function nextDashboard(){
-      if(pos == urls.length) pos = 0; // reset the counter
-        document.getElementById('rotate').src = urls[pos];
-        pos++;
-        console.log('Now Serving ' + pos);
-        setInterval(nextDashboard, 10000); // every 10 seconds, switch to whatever you need.
-      }
-    }
   </script>
 </head>
-<body onload="frameRotator()">
+<body onload="runTheShow()">
   <iframe id="rotate" width="100%" height="100%" frameborder="0"></iframe>
 </body>
 </html>
