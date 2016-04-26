@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Happy Rotating</title>
+  <style type="text/css">
+    html, body {
+      /*this css ensures the iframe is maximised in the window */
+      background:#000
+      overflow: hidden;
+      margin: auto;
+      height: 100%;
+      width: 100%;
+    }
+  </style>
+
+  <script>
+  function frameRotator(){
+    //edit this array with your embed links (take the URL only, not the whole iframe link provided!)
+    var urls = [
+      'http://google.com',
+      'http://github.com'];
+    var pos = 0;
+    
+    function nextDashboard(){
+      if(pos == urls.length) pos = 0; // reset the counter
+        document.getElementById('rotate').src = urls[pos];
+        pos++;
+        console.log('Now Serving ' + pos);
+        setInterval(nextDashboard, 10000); // every 10 seconds, switch to whatever you need.
+      }
+    }
+  </script>
+</head>
+<body onload="frameRotator()">
+  <iframe id="rotate" width="100%" height="100%" frameborder="0"></iframe>
+</body>
+</html>
