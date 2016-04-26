@@ -38,13 +38,13 @@ function runTheShow(){
   showNext(0, pages);
 
   function showNext(current, thePages){
-    var index = (current+1)%thePages.length
+    var index = current%thePages.length
     var currentIframe = $($('iframe')[current])
     var nextIframe = $($('iframe')[index])
     currentIframe.hide();
     nextIframe.show();
 
-    setTimeout(function(){showNext(index, thePages); },timeoutMs );
+    setTimeout(function(){showNext(index+1, thePages); },timeoutMs );
   }
 }
 
