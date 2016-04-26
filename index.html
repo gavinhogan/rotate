@@ -2,51 +2,72 @@
 <html>
 <head>
   <title>Happy Rotating Now</title>
+  <!-- Refresh the page every hour -->
+  <meta http-equiv="refresh" content="3600">
+
+  <!-- Basic Styles to Setup the iframes layout correctly -->
   <style type="text/css">
-* {
-	margin:0;
-	padding:0;
-	border:0;
-}
-html, body, iframe {
-	height:100%;
-	width:100%;
-	overflow:hidden;
-}
-/* We do NOT want the iframes to show by default */
-iframe{
-	display:none;
-}
+  * {
+  	margin:0;
+  	padding:0;
+  	border:0;
+  }
+  html, body, iframe {
+  	height:100%;
+  	width:100%;
+  	overflow:hidden;
+  }
 
-body iframe:first-child{
-	display:inline;
-}
-</style>
+  /* We do NOT want the iframes to show by default */
+  iframe{
+  	display:none;
+  }
+
+  body iframe:first-child{
+  	display:inline;
+  }
+  </style>
+  <!-- Honestly jquery is over kill for this use case, but it is handy for debugging... -->
+  <!-- If this is being loaded from the file system you will need to add https:// to the src -->
   <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+
   <script>
-function runTheShow(){
-  var timeoutMs = 10000;
-  var pages = [
-    'https://gavinhogan.github.io/rotate/two.html',
-    'https://gavinhogan.github.io/rotate/one.html'];
+  /*
+   * This script takes slightly different approach to most rotation or carosel
+   * scripts. Instead of swapping out the url in a single iframe, this script
+   * adds an iframe for each url being displayed and then toggles the visibility
+   * of the iframes. The primary benefit of this is that the brower will not
+   * attempt to reload the page, which causes a white flash between screens. The
+   * downside if that fresh content will NOT automatically appear. The use of
+   * a meta refresh tag in the page head ensure the content is reloaded periodically
+   */
+  function runTheShow(){
+    //Change the timeout to suit your needs
+    var timeoutMs = 10000;
 
-  for(page of pages){
-    //Add a hidden iframe for EVER page you wish to display
-    $('body').append( "<iframe src='"+page+"' frameborder='0' scrolling='no'/>" );
+    // Pages, these can be relative to this page or fully specified urls
+    var pages = [
+      'two.html',
+      'one.html'];
+
+    for(page of pages){
+      //Add an iframe for EVERY page you wish to display
+      $('body').append( "<iframe src='"+page+"' frameborder='0' scrolling='no'/>" );
+    }
+
+    showNext(0, pages); //Start her up.
+
+    function showNext(current, thePages){
+      var index = (current+1)%thePages.length
+      var currentIframe = $($('iframe')[current])
+      var nextIframe = $($('iframe')[index])
+      currentIframe.hide();
+      nextIframe.show();
+
+      setTimeout(function(){showNext(index, thePages); },timeoutMs );
+    }
   }
-
-  showNext(0, pages);
-
-  function showNext(current, thePages){
-    var index = (current+1)%thePages.length
-    var currentIframe = $($('iframe')[current])
-    var nextIframe = $($('iframe')[index])
-    currentIframe.hide();
-    nextIframe.show();
-
-    setTimeout(function(){showNext(index, thePages); },timeoutMs );
-  }
-}
 
   </script>
 </head>
