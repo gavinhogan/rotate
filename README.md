@@ -9,3 +9,7 @@ of the iframes. The primary benefit of this is that the browser will not
 attempt to reload the page, which causes a white flash between screens. The
 downside if that fresh content will NOT automatically appear. The use of
 a meta refresh tag in the page head ensure the content is reloaded periodically
+
+
+# Try it
+https://gavinhogan.github.io/rotate
